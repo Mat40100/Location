@@ -8,6 +8,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Subject</th>
                 <th>Room</th>
                 <th>Creator</th>
                 <th>Max customers</th>
@@ -20,6 +21,7 @@
         <tbody>
         {% for course in courses %}
             <tr>
+                <td>{{ course.subject }}</td>
                 <td>{{ course.room.name }}</td>
                 <td>{{ course.creator.firstName~" "~course.creator.lastName }}</td> {# TODO : link to creator profile #}
                 <td>{{ course.maximumCustomerNumber }}</td>

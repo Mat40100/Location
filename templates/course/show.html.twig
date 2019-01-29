@@ -24,6 +24,10 @@
                 <td>{{ course.price }}</td>
             </tr>
             <tr>
+                <th>Left places</th>
+                <td>{{ course.leftPlace }}</td>
+            </tr>
+            <tr>
                 <th>Actions</th>
                 <td>
                     {% if is_granted("ROLE_CUSTOMER") %}

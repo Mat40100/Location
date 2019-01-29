@@ -43,6 +43,8 @@ class CourseController extends AbstractController
             $entityManager->persist($course);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Votre cours à été créé.');
+
             return $this->redirectToRoute('app_course_index');
         }
 
@@ -73,6 +75,7 @@ class CourseController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', 'Votre cours a bien été modifié.');
 
             return $this->redirectToRoute('app_course_index', [
                 'id' => $course->getId(),
@@ -96,6 +99,8 @@ class CourseController extends AbstractController
             $entityManager->remove($course);
             $entityManager->flush();
         }
+
+        $this->addFlash('success', 'Votre cours est supprimé.');
 
         return $this->redirectToRoute('app_course_index');
     }

@@ -56,6 +56,11 @@ class Course
      */
     private $creator;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $subject;
+
     public function __construct()
     {
         $this->customers = new ArrayCollection();
@@ -155,5 +160,17 @@ class Course
     public function getLeftPlace()
     {
         return $this->getMaximumCustomerNumber() - count($this->getCustomers());
+    }
+
+    public function getSubject(): ?string
+    {
+        return $this->subject;
+    }
+
+    public function setSubject(string $subject): self
+    {
+        $this->subject = $subject;
+
+        return $this;
     }
 }
