@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Course;
 use App\Form\CourseType;
 use App\Repository\CourseRepository;
+use App\Service\CourseService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -103,11 +104,18 @@ class CourseController extends AbstractController
      * @Route("/{id}/join")
      * @IsGranted("ROLE_CUSTOMER")
      */
-    public function join(Course $course)
+    public function join(Course $course, CourseService $courseService)
     {
+        if ($courseService->checkCustomerNumber($course) === false ) {
+            $this->addFlash('warning', 'Ce cours est plein :(');
+
+            return $this->redirectToRoute('app_course_show', ['id' => $course->getId()]);
+        }
+
         $course->addCustomer($this->getUser());
         $this->getDoctrine()->getManager()->flush();
 
+        $this->addFlash('success', 'Vous êtes inscrit à ce cours');
         # TODO : send email, link to the suscribe process ect...
 
         return $this->redirectToRoute('app_course_show', ['id' => $course->getId()]);
@@ -122,6 +130,7 @@ class CourseController extends AbstractController
         $course->removeCustomer($this->getUser());
         $this->getDoctrine()->getManager()->flush();
 
+        $this->addFlash('success', 'Vous vous êtes désinscrit de ce cours.');
         # TODO : send email, link to the suscribe process ect...
 
         return $this->redirectToRoute('app_course_show', ['id' => $course->getId()]);

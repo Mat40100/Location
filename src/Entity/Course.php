@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CourseRepository")
@@ -143,5 +144,10 @@ class Course
         $this->creator = $creator;
 
         return $this;
+    }
+
+    public function getLeftPlace()
+    {
+        return $this->getMaximumCustomerNumber() - count($this->getCustomers());
     }
 }
