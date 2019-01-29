@@ -1,0 +1,26 @@
+{% block menu %}
+    <ul>
+        {% if is_granted("ROLE_USER") %}
+            <li><a href="{{ path('logout') }}">logout</a></li>
+            <li><a href="{{ path('app_course_new') }}">New course</a></li>
+
+        {% else %}
+            <li><a href="{{ path('app_login') }}">login</a></li>
+        {% endif %}
+
+            <li><a href="{{ path('app_homepage_index') }}">Home</a></li>
+            <li><a href="{{ path('app_room_index') }}">Room</a></li>
+            <li><a href="{{ path('app_course_index') }}">Courses</a></li>
+
+        {% if is_granted("ROLE_ADMIN") %}
+            <li><a href="{{ path('app_room_new') }}">Room - new</a></li>
+        {% endif %}
+        <li>roles :
+            {% if app.user is not null %}
+                {% for role in app.user.roles %}
+                     {{ role }}
+                {% endfor %}
+            {% endif %}
+        </li>
+    </ul>
+{% endblock %}
