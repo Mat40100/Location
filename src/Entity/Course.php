@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Integer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CourseRepository")
@@ -26,21 +27,26 @@ class Course
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\GreaterThan(0)
      */
     private $maximumCustomerNumber;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $CourseDate;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\GreaterThan(0)
+     * @Assert\NotNull()
      */
     private $price;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Room", inversedBy="courses")
+     * @Assert\NotNull()
      */
     private $room;
 
