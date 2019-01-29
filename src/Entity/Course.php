@@ -19,7 +19,7 @@ class Course
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="courses")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="joinedCourses")
      */
     private $customers;
 
@@ -42,6 +42,12 @@ class Course
      * @ORM\ManyToOne(targetEntity="App\Entity\Room", inversedBy="courses")
      */
     private $room;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="createdCourses")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $creator;
 
     public function __construct()
     {
@@ -123,6 +129,18 @@ class Course
     public function setRoom(?Room $room): self
     {
         $this->room = $room;
+
+        return $this;
+    }
+
+    public function getCreator(): ?User
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?User $creator): self
+    {
+        $this->creator = $creator;
 
         return $this;
     }

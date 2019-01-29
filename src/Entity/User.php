@@ -40,12 +40,12 @@ class User implements UserInterface
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Course", mappedBy="customers")
      */
-    private $courses;
+    private $joinedCourses;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $sex;
+    private $genre;
 
     /**
      * @ORM\Column(type="datetime")
@@ -72,9 +72,15 @@ class User implements UserInterface
      */
     private $city;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Course", mappedBy="creator", orphanRemoval=true)
+     */
+    private $createdCourses;
+
     public function __construct()
     {
-        $this->courses = new ArrayCollection();
+        $this->joinedCourses = new ArrayCollection();
+        $this->createdCourses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -158,39 +164,39 @@ class User implements UserInterface
     /**
      * @return Collection|Course[]
      */
-    public function getCourses(): Collection
+    public function getJoinedCourses(): Collection
     {
-        return $this->courses;
+        return $this->joinedCourses;
     }
 
-    public function addCourse(Course $course): self
+    public function addJoinedCourse(Course $course): self
     {
-        if (!$this->courses->contains($course)) {
-            $this->courses[] = $course;
-            $course->addCutomer($this);
+        if (!$this->joinedCourses->contains($course)) {
+            $this->joinedCourses[] = $course;
+            $course->addCustomer($this);
         }
 
         return $this;
     }
 
-    public function removeCourse(Course $course): self
+    public function removeJoinedCourse(Course $course): self
     {
-        if ($this->courses->contains($course)) {
-            $this->courses->removeElement($course);
-            $course->removeCutomer($this);
+        if ($this->joinedCourses->contains($course)) {
+            $this->joinedCourses->removeElement($course);
+            $course->removeCustomer($this);
         }
 
         return $this;
     }
 
-    public function getSex(): ?bool
+    public function getGenre(): ?bool
     {
-        return $this->sex;
+        return $this->genre;
     }
 
-    public function setSex(bool $sex): self
+    public function setGenre(bool $genre): self
     {
-        $this->sex = $sex;
+        $this->genre = $genre;
 
         return $this;
     }
@@ -251,6 +257,37 @@ class User implements UserInterface
     public function setCity(string $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Course[]
+     */
+    public function getCreatedCourses(): Collection
+    {
+        return $this->createdCourses;
+    }
+
+    public function addCreatedCourse(Course $createdCourse): self
+    {
+        if (!$this->createdCourses->contains($createdCourse)) {
+            $this->createdCourses[] = $createdCourse;
+            $createdCourse->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreatedCourse(Course $createdCourse): self
+    {
+        if ($this->createdCourses->contains($createdCourse)) {
+            $this->createdCourses->removeElement($createdCourse);
+            // set the owning side to null (unless already changed)
+            if ($createdCourse->getCreator() === $this) {
+                $createdCourse->setCreator(null);
+            }
+        }
 
         return $this;
     }
