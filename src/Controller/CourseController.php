@@ -97,4 +97,24 @@ class CourseController extends AbstractController
 
         return $this->redirectToRoute('app_course_index');
     }
+
+    /**
+     * @Route("/{id}/join")
+     * @IsGranted("ROLE_CUSTOMER")
+     */
+    public function join(Course $course)
+    {
+        $course->addCustomer($this->getUser());
+        $this->getDoctrine()->getManager()->flush();
+    }
+
+    /**
+     * @Route("/{id}/leave")
+     * @IsGranted("ROLE_CUSTOMER")
+     */
+    public function leave(Course $course)
+    {
+        $course->removeCustomer($this->getUser());
+        $this->getDoctrine()->getManager()->flush();
+    }
 }
