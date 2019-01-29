@@ -8,8 +8,8 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ course.id }}</td>
+                <th>Creator</th>
+                <td>{{ course.creator.firstName~" "~course.creator.lastName }}</td>
             </tr>
             <tr>
                 <th>MaximumCustomerNumber</th>
@@ -23,8 +23,22 @@
                 <th>Price</th>
                 <td>{{ course.price }}</td>
             </tr>
+            <tr>
+                <th>Actions</th>
+                <td>
+                    {% if is_granted("ROLE_CUSTOMER") %}
+                        <a href="{{ path('app_course_join', { 'id' : course.id }) }}">Join this course</a> {#TODO : join/leave in function if suscribed or not #}
+                        <a href="{{ path('app_course_leave', { 'id' : course.id }) }}">Leave this course</a>
+                    {% endif %}
+                </td>
+            </tr>
         </tbody>
     </table>
+
+    <p>Participants</p>
+    {% for customer in course.customers %}
+        <p>{{ customer.firstName }}</p> {# TODO link to customer profile #}
+    {% endfor %}
 
     <a href="{{ path('app_course_index') }}">back to list</a>
 

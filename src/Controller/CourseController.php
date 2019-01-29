@@ -37,6 +37,7 @@ class CourseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $course->setCreator($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($course);
             $entityManager->flush();
@@ -106,6 +107,10 @@ class CourseController extends AbstractController
     {
         $course->addCustomer($this->getUser());
         $this->getDoctrine()->getManager()->flush();
+
+        # TODO : send email, link to the suscribe process ect...
+
+        return $this->redirectToRoute('app_course_show', ['id' => $course->getId()]);
     }
 
     /**
@@ -116,5 +121,9 @@ class CourseController extends AbstractController
     {
         $course->removeCustomer($this->getUser());
         $this->getDoctrine()->getManager()->flush();
+
+        # TODO : send email, link to the suscribe process ect...
+
+        return $this->redirectToRoute('app_course_show', ['id' => $course->getId()]);
     }
 }
