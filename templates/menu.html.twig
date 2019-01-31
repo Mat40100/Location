@@ -15,14 +15,15 @@
             <li><a href="{{ path('app_course_index') }}">Courses</a></li>
 
         {% if is_granted("ROLE_ADMIN") %}
-            <li><a href="{{ path('app_room_new') }}">Room - new</a></li>
+            <li><a href="{{ path('app_admin_index') }}">Admin</a></li>
         {% endif %}
-        <li>roles :
-            {% if app.user is not null %}
-                {% for role in app.user.roles %}
-                     {{ role }}
-                {% endfor %}
-            {% endif %}
-        </li>
+        {% if app.user is not null %}
+            <li>roles :
+
+        {% for role in app.user.roles %}
+                 {{ role }}
+            {% endfor %}
+            </li>
+        {% endif %}
     </ul>
 {% endblock %}

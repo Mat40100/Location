@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Course;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @method Course|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,16 @@ class CourseRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Course::class);
+    }
+
+    public function findNextCourses(\DateTime $beginDate)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.CourseDate > ?1')
+            ->setParameter('1', $beginDate)
+            ->orderBy('c.CourseDate', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     // /**
