@@ -32,8 +32,8 @@ class Course
     private $maximumCustomerNumber;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
+     * @ORM\Column(type="date")
+     * @Assert\Date()
      */
     private $CourseDate;
 
@@ -60,6 +60,11 @@ class Course
      * @ORM\Column(type="string", length=255)
      */
     private $subject;
+
+    /**
+     * @ORM\Column(type="time")
+     */
+    private $time;
 
     public function __construct()
     {
@@ -170,6 +175,18 @@ class Course
     public function setSubject(string $subject): self
     {
         $this->subject = $subject;
+
+        return $this;
+    }
+
+    public function getTime(): ?\DateTimeInterface
+    {
+        return $this->time;
+    }
+
+    public function setTime(\DateTimeInterface $time): self
+    {
+        $this->time = $time;
 
         return $this;
     }
