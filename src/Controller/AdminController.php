@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Course;
+use App\Repository\CourseRepository;
+use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,11 +26,9 @@ class AdminController extends AbstractController
     /**
      * @Route("/courses")
      */
-    public function courses()
+    public function courses(CourseRepository $repository)
     {
-        $this->getDoctrine()->getRepository(Course::class)->findAll();
-
-        return $this->render('admin/index.html.twig');
+        return $this->render('course/index.html.twig', ['courses' => $repository->findAll()]);
     }
 
     /**
@@ -40,5 +39,13 @@ class AdminController extends AbstractController
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
+    }
+
+    /**
+     * @Route("/rooms", methods={"GET"})
+     */
+    public function roomOverview(RoomRepository $repository)
+    {
+        return $this->render('admin/room_index.html.twig', ['rooms' => $repository->findAll()]);
     }
 }

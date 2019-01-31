@@ -22,6 +22,53 @@
         </tbody>
     </table>
 
+
+    <h3>Upcoming courses</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Room</th>
+            <th>Creator</th>
+            <th>Max customers</th>
+            <th>Place left</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Price</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+    <tbody>
+    {% for course in room.courses %}
+                 <tr>
+                    <td>{{ course.subject }}</td>
+                    <td>{{ course.room.name }}</td>
+                    <td><a href="{{ path('app_user_show', {'id' : course.creator.id}) }}">{{ course.creator.firstName~" "~course.creator.lastName }}</a></td>
+                    <td>{{ course.maximumCustomerNumber }}</td>
+                    <td>{{ course.leftPlace() }}</td>
+                    <td>{{ course.CourseDate ? course.CourseDate|date('Y-m-d') : '' }}</td>
+                    <td>{{ course.time ? course.time|date('H:i:s') : '' }}</td>
+                    <td>{{ course.price }}</td>
+                    <td>
+                        <a href="{{ path('app_course_show', {'id': course.id}) }}">show</a>
+                        {% if app.user is same as(course.creator) %}
+                            <a href="{{ path('app_course_edit', {'id': course.id}) }}">edit</a>
+                        {% endif %}
+
+                        {% if is_granted("ROLE_CUSTOMER") %}
+                            <a href="{{ path('app_course_join', { 'id' : course.id }) }}">Join this course</a> {#TODO : join/leave in function if suscribed or not #}
+                            <a href="{{ path('app_course_leave', { 'id' : course.id }) }}">Leave this course</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
     <a href="{{ path('app_room_index') }}">back to list</a>
 
     {% if is_granted("ROLE_ADMIN") %}
