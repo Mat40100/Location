@@ -29,7 +29,7 @@ class AdminController extends AbstractController
     {
         $this->getDoctrine()->getRepository(Course::class)->findAll();
 
-        return $this->render('admin/index.html.twig');
+        return $this->render('course/index.html.twig');
     }
 
     /**
