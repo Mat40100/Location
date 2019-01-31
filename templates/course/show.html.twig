@@ -41,7 +41,7 @@
 
     <p>Participants</p>
     {% for customer in course.customers %}
-        <p>{{ customer.firstName }}</p> {# TODO link to customer profile #}
+        <a href="{{ path('app_user_show', {'id' : customer.id }) }}">{{ customer.firstName }}</a>
     {% endfor %}
 
     <a href="{{ path('app_course_index') }}">back to list</a>
