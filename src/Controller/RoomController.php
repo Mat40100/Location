@@ -55,6 +55,7 @@ class RoomController extends AbstractController
      */
     public function show(Room $room): Response
     {
+        #TODO : modify repo to find only upcoming event
         return $this->render('room/show.html.twig', [
             'room' => $room,
         ]);

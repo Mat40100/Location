@@ -23,7 +23,7 @@
         {% for course in courses %}
             <tr>
                 <td>{{ course.subject }}</td>
-                <td>{{ course.room.name }}</td>
+                <td><a href="{{ path('app_room_show', {'id' : course.room.id }) }}">{{ course.room.name }}</a></td>
                 <td><a href="{{ path('app_user_show', {'id' : course.creator.id}) }}">{{ course.creator.firstName~" "~course.creator.lastName }}</a></td>
                 <td>{{ course.maximumCustomerNumber }}</td>
                 <td>{{ course.leftPlace() }}</td>
