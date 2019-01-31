@@ -18,23 +18,23 @@ class UserType extends AbstractType
     {
 
         $builder
-            ->add('lastName', TextType::class)
-            ->add('firstName', TextType::class)
-            ->add('email', EmailType::class)
+            ->add('lastName', TextType::class, ['required' => false])
+            ->add('firstName', TextType::class, ['required' => false])
+            ->add('email', EmailType::class, ['required' => false])
             ->add('genre', ChoiceType::class, [
                 'choices' => [
                     'Femme' => true,
                     'Homme' => false,
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add('birthDate', DateType::class, [
-                'required' => true,
+                'required' => false,
             ])
             ->add('department', IntegerType::class, [
-                'required' => true
+                'required' => false
             ])
-            ->add('city', TextType::class)
+            ->add('city', TextType::class , ['required' => false])
             ->add('role', ChoiceType::class , [
                 'mapped' => false,
                 'choices' => [

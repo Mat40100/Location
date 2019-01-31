@@ -45,38 +45,34 @@ class User implements UserInterface
     private $joinedCourses;
 
     /**
-     * @ORM\Column(type="boolean")
-     * @Assert\NotNull()
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $genre;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      * @Assert\Date()
      */
     private $birthDate;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Assert\Type(type="integer")
      */
     private $department;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $city;
 
@@ -85,10 +81,16 @@ class User implements UserInterface
      */
     private $createdCourses;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive;
+
     public function __construct()
     {
         $this->joinedCourses = new ArrayCollection();
         $this->createdCourses = new ArrayCollection();
+        $this->setIsActive(true);
     }
 
     public function getId(): ?int
@@ -226,7 +228,7 @@ class User implements UserInterface
         return $this->birthDate;
     }
 
-    public function setBirthDate(\DateTimeInterface $birthDate): self
+    public function setBirthDate(?\DateTimeInterface $birthDate): self
     {
         $this->birthDate = $birthDate;
 
@@ -298,5 +300,32 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getSex()
+    {
+        if ($this->getGenre() === null ) {
+            return 'Non renseigné';
+        }
+
+        if ($this->getGenre() === true ) {
+            return 'Feminin';
+        }
+
+        if ($this->getGenre() === false ) {
+            return 'Masculin';
+        }
     }
 }

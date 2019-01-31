@@ -3,9 +3,11 @@
         {% if is_granted("ROLE_USER") %}
             <li><a href="{{ path('logout') }}">logout</a></li>
             <li><a href="{{ path('app_course_new') }}">New course</a></li>
+            <li><a href="{{ path('app_user_me') }}">Me</a></li>
 
         {% else %}
             <li><a href="{{ path('app_login') }}">login</a></li>
+            <li><a href="{{ path('app_registration_register') }}">S'inscrire</a></li>
         {% endif %}
 
             <li><a href="{{ path('app_homepage_index') }}">Home</a></li>
