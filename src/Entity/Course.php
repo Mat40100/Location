@@ -39,12 +39,6 @@ class Course
     private $price;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Room", inversedBy="courses")
-     * @Assert\NotNull()
-     */
-    private $room;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="createdCourses")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -116,18 +110,6 @@ class Course
     public function setPrice(int $price): self
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getRoom(): ?Room
-    {
-        return $this->room;
-    }
-
-    public function setRoom(?Room $room): self
-    {
-        $this->room = $room;
 
         return $this;
     }

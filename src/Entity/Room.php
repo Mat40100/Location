@@ -29,9 +29,9 @@ class Room
     private $size;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Course", mappedBy="room")
+     * @ORM\OneToMany(targetEntity="App\Entity\SlotTaken", mappedBy="room")
      */
-    private $courses;
+    private $slotTaken;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -40,7 +40,7 @@ class Room
 
     public function __construct()
     {
-        $this->courses = new ArrayCollection();
+        $this->slotTaken = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -72,37 +72,6 @@ class Room
         return $this;
     }
 
-    /**
-     * @return Collection|Course[]
-     */
-    public function getCourses(): Collection
-    {
-        return $this->courses;
-    }
-
-    public function addCourse(Course $course): self
-    {
-        if (!$this->courses->contains($course)) {
-            $this->courses[] = $course;
-            $course->setRoom($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCourse(Course $course): self
-    {
-        if ($this->courses->contains($course)) {
-            $this->courses->removeElement($course);
-            // set the owning side to null (unless already changed)
-            if ($course->getRoom() === $this) {
-                $course->setRoom(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -111,6 +80,37 @@ class Room
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SlotTaken[]
+     */
+    public function getSlotTaken(): Collection
+    {
+        return $this->slotTaken;
+    }
+
+    public function addSlotTaken(SlotTaken $slotTaken): self
+    {
+        if (!$this->slotTaken->contains($slotTaken)) {
+            $this->slotTaken[] = $slotTaken;
+            $slotTaken->setRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSlotTaken(SlotTaken $slotTaken): self
+    {
+        if ($this->slotTaken->contains($slotTaken)) {
+            $this->slotTaken->removeElement($slotTaken);
+            // set the owning side to null (unless already changed)
+            if ($slotTaken->getRoom() === $this) {
+                $slotTaken->setRoom(null);
+            }
+        }
 
         return $this;
     }

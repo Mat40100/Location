@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SlotTakenRepository")
@@ -27,6 +28,12 @@ class SlotTaken
      * @ORM\JoinColumn(nullable=false)
      */
     private $course;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Room", inversedBy="slotTaken")
+     * @Assert\NotNull()
+     */
+    private $room;
 
     /**
      * @ORM\Column(type="date")
@@ -58,6 +65,18 @@ class SlotTaken
     public function setCourse(Course $course): self
     {
         $this->course = $course;
+
+        return $this;
+    }
+
+    public function getRoom(): ?Room
+    {
+        return $this->room;
+    }
+
+    public function setRoom(?Room $room): self
+    {
+        $this->room = $room;
 
         return $this;
     }

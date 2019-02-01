@@ -12,6 +12,10 @@
                 <td>{{ course.creator.firstName~" "~course.creator.lastName }}</td>
             </tr>
             <tr>
+                <th>Room</th>
+                <td>{{ course.slotTaken.room.name }}</td>
+            </tr>
+            <tr>
                 <th>Maximum customer</th>
                 <td>{{ course.maximumCustomerNumber }}</td>
             </tr>

@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Room;
 use App\Entity\SlotAllowed;
 use App\Entity\SlotTaken;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -22,6 +23,10 @@ class SlotTakenType extends AbstractType
                 }
             ])
             ->add('slotDate', DateType::class)
+            ->add('room', EntityType::class , [
+                'class' => Room::class,
+                'choice_label' => 'name'
+            ])
         ;
     }
 

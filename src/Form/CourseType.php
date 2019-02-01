@@ -22,10 +22,6 @@ class CourseType extends AbstractType
             ->add('maximumCustomerNumber', IntegerType::class)
             ->add('slotTaken', SlotTakenType::class)
             ->add('price', IntegerType::class)
-            ->add('room', EntityType::class , [
-                'class' => Room::class,
-                'choice_label' => 'name'
-            ])
         ;
     }
 

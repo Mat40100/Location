@@ -9,6 +9,7 @@ use App\Service\AllowService;
 use App\Service\CourseService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,13 +33,22 @@ class CourseController extends AbstractController
      * @Route("/new", methods={"GET","POST"})
      * @IsGranted("ROLE_CLIENT")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, CourseService $service): Response
     {
         $course = new Course();
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$service->checkSlotAvailable($course->getSlotTaken())) {
+                $form->get('slotTaken')->get('slot')->addError(new FormError('Ce créneau n\'est plus disponibe, choisissez en un autre !'));
+
+                return $this->render('course/new.html.twig', [
+                    'course' => $course,
+                    'form' => $form->createView(),
+                ]);
+            }
+
             $course->setCreator($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($course);
