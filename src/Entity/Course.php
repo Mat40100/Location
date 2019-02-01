@@ -32,12 +32,6 @@ class Course
     private $maximumCustomerNumber;
 
     /**
-     * @ORM\Column(type="date")
-     * @Assert\Date()
-     */
-    private $CourseDate;
-
-    /**
      * @ORM\Column(type="integer")
      * @Assert\GreaterThan(0)
      * @Assert\NotNull()
@@ -62,9 +56,9 @@ class Course
     private $subject;
 
     /**
-     * @ORM\Column(type="time")
+     * @ORM\OneToOne(targetEntity="App\Entity\SlotTaken", mappedBy="course", cascade={"persist", "remove"})
      */
-    private $time;
+    private $slotTaken;
 
     public function __construct()
     {
@@ -110,18 +104,6 @@ class Course
     public function setMaximumCustomerNumber(int $maximumCustomerNumber): self
     {
         $this->maximumCustomerNumber = $maximumCustomerNumber;
-
-        return $this;
-    }
-
-    public function getCourseDate(): ?\DateTimeInterface
-    {
-        return $this->CourseDate;
-    }
-
-    public function setCourseDate(\DateTimeInterface $CourseDate): self
-    {
-        $this->CourseDate = $CourseDate;
 
         return $this;
     }
@@ -179,14 +161,19 @@ class Course
         return $this;
     }
 
-    public function getTime(): ?\DateTimeInterface
+    public function getSlotTaken(): ?SlotTaken
     {
-        return $this->time;
+        return $this->slotTaken;
     }
 
-    public function setTime(\DateTimeInterface $time): self
+    public function setSlotTaken(SlotTaken $slotTaken): self
     {
-        $this->time = $time;
+        $this->slotTaken = $slotTaken;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $slotTaken->getCourse()) {
+            $slotTaken->setCourse($this);
+        }
 
         return $this;
     }
