@@ -9,6 +9,7 @@ use App\Service\AllowService;
 use App\Service\CourseService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,11 +33,15 @@ class CourseController extends AbstractController
      * @Route("/new", methods={"GET","POST"})
      * @IsGranted("ROLE_CLIENT")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, CourseService $service): Response
     {
         $course = new Course();
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $form = $service->checkForm($form, $course);
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $course->setCreator($this->getUser());
@@ -69,9 +74,9 @@ class CourseController extends AbstractController
      * @Route("/{id}/edit", methods={"GET","POST"})
      * @IsGranted("ROLE_CLIENT")
      */
-    public function edit(Request $request, Course $course, AllowService $service): Response
+    public function edit(Request $request, Course $course, AllowService $allowService, CourseService $courseService): Response
     {
-        if (!$service->allowAccess($this->getUser(), $course->getCreator())) {
+        if (!$allowService->allowAccess($this->getUser(), $course->getCreator())) {
             $this->addFlash('danger', 'Vous n\' avez pas accès à ces fonctions');
 
             return $this->redirectToRoute('app_homepage_index');
@@ -79,6 +84,10 @@ class CourseController extends AbstractController
 
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $form = $courseService->checkForm($form, $course);
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
