@@ -75,11 +75,16 @@ class CourseService
         if (!$this->checkSlotAvailable($course->getSlotTaken())) {
             $form->get('slotTaken')->get('slot')->addError(new FormError('Ce créneau n\'est plus disponibe, choisissez en un autre !'));
         }
+
         if ($course->getMaximumCustomerNumber() > $course->getSlotTaken()->getRoom()->getPlaces()) {
             $form->get('maximumCustomerNumber')->addError(new FormError(
                 'Vous ne pouvez pas mettre plus de personnes que la salle ne peut en contenir'
             ));
         }
+
+        if ($form->get('slotTaken')->get('slotDate')->getData() < new \DateTime()) {
+            $form->get('slotTaken')->get('slotDate')->addError( new FormError('La date doit être supérieure à celle du jour...'));
+        };
 
         return $form;
     }
