@@ -52,8 +52,10 @@ class CourseService
         $allowed = $this->allowedRepository->findAll();
 
         foreach ($taken as $item => $value) {
-            if (in_array($value->getSlot(), $allowed)) {
-                unset($allowed[$item]);
+            foreach ($allowed as $key => $object) {
+                if ($value->getSlot()->getId() === $object->getId()) {
+                    unset($allowed[$key]);
+                }
             }
         }
 

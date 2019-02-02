@@ -79,9 +79,9 @@ class CourseController extends AbstractController
      * @Route("/{id}/edit", methods={"GET","POST"})
      * @IsGranted("ROLE_CLIENT")
      */
-    public function edit(Request $request, Course $course, AllowService $service): Response
+    public function edit(Request $request, Course $course, AllowService $allowService, CourseService $courseService): Response
     {
-        if (!$service->allowAccess($this->getUser(), $course->getCreator())) {
+        if (!$allowService->allowAccess($this->getUser(), $course->getCreator())) {
             $this->addFlash('danger', 'Vous n\' avez pas accès à ces fonctions');
 
             return $this->redirectToRoute('app_homepage_index');
@@ -91,6 +91,15 @@ class CourseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$courseService->checkSlotAvailable($course->getSlotTaken())) {
+                $form->get('slotTaken')->get('slot')->addError(new FormError('Ce créneau n\'est plus disponibe, choisissez en un autre !'));
+
+                return $this->render('course/new.html.twig', [
+                    'course' => $course,
+                    'form' => $form->createView(),
+                ]);
+            }
+
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'Votre cours a bien été modifié.');
 

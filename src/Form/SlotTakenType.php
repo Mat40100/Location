@@ -16,16 +16,20 @@ class SlotTakenType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('room', EntityType::class , [
+                'class' => Room::class,
+                'placeholder' => 'Choisissez une salle',
+                'choice_label' => 'name'
+            ])
+            ->add('slotDate', DateType::class, [
+                'widget' => 'single_text'
+            ])
             ->add('slot', EntityType::class, [
+                'placeholder' => 'Selectionnez un des horaires disponibles',
                 'class' => SlotAllowed::class,
                 'choice_label' => function(SlotAllowed $slotAllowed) {
                     return $slotAllowed->getStartTime()->format('H:i');
                 }
-            ])
-            ->add('slotDate', DateType::class)
-            ->add('room', EntityType::class , [
-                'class' => Room::class,
-                'choice_label' => 'name'
             ])
         ;
     }

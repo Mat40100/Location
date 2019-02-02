@@ -25,7 +25,7 @@ class SlotTaken
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Course", inversedBy="slotTaken", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $course;
 

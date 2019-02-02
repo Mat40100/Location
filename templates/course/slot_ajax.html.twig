@@ -1,0 +1,5 @@
+<select id="course_slotTaken_slot" name="course[slotTaken][slot]">
+    {% for option in available %}
+        <option value="{{ option.id }}">{{ option.startTime|date('H:i') }}</option>
+    {% endfor %}
+</select>

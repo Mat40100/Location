@@ -19,7 +19,9 @@ class CourseType extends AbstractType
     {
         $builder
             ->add('subject', TextType::class)
-            ->add('maximumCustomerNumber', IntegerType::class)
+            ->add('maximumCustomerNumber', IntegerType::class, [
+                'attr' => ['min' => '1'],
+            ])
             ->add('slotTaken', SlotTakenType::class)
             ->add('price', IntegerType::class)
         ;
