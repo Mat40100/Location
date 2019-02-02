@@ -12,12 +12,24 @@
                 <td>{{ course.creator.firstName~" "~course.creator.lastName }}</td>
             </tr>
             <tr>
-                <th>MaximumCustomerNumber</th>
+                <th>Room</th>
+                <td>{{ course.slotTaken.room.name }}</td>
+            </tr>
+            <tr>
+                <th>Maximum customer</th>
                 <td>{{ course.maximumCustomerNumber }}</td>
             </tr>
             <tr>
                 <th>CourseDate</th>
-                <td>{{ course.CourseDate ? course.CourseDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ course.slotTaken.slotDate|date('Y-m-d') }}</td>
+            </tr>
+            <tr>
+                <th>Début du cours</th>
+                <td>{{ course.slotTaken.slot.startTime|date('H:i') }}</td>
+            </tr>
+            <tr>
+                <th>Fin du cours</th>
+                <td>{{ course.slotTaken.slot.endTime|date('H:i') }}</td>
             </tr>
             <tr>
                 <th>Price</th>

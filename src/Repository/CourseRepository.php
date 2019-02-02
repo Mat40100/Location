@@ -23,9 +23,10 @@ class CourseRepository extends ServiceEntityRepository
     public function findNextCourses(\DateTime $beginDate)
     {
         return $this->createQueryBuilder('c')
-            ->where('c.CourseDate > ?1')
+            ->join('c.slotTaken', 'slotTaken')
+            ->where('slotTaken.slotDate > ?1')
             ->setParameter('1', $beginDate)
-            ->orderBy('c.CourseDate', 'DESC')
+            ->orderBy('slotTaken.slotDate', 'DESC')
             ->getQuery()
             ->getResult();
     }
