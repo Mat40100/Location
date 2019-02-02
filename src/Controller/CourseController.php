@@ -39,16 +39,11 @@ class CourseController extends AbstractController
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted()) {
+            $form = $service->checkForm($form, $course);
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$service->checkSlotAvailable($course->getSlotTaken())) {
-                $form->get('slotTaken')->get('slot')->addError(new FormError('Ce créneau n\'est plus disponibe, choisissez en un autre !'));
-
-                return $this->render('course/new.html.twig', [
-                    'course' => $course,
-                    'form' => $form->createView(),
-                ]);
-            }
-
             $course->setCreator($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($course);
@@ -90,16 +85,11 @@ class CourseController extends AbstractController
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted()) {
+            $form = $courseService->checkForm($form, $course);
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$courseService->checkSlotAvailable($course->getSlotTaken())) {
-                $form->get('slotTaken')->get('slot')->addError(new FormError('Ce créneau n\'est plus disponibe, choisissez en un autre !'));
-
-                return $this->render('course/new.html.twig', [
-                    'course' => $course,
-                    'form' => $form->createView(),
-                ]);
-            }
-
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'Votre cours a bien été modifié.');
 

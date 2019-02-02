@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Course;
 use App\Entity\Room;
 use App\Service\CourseService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -17,16 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class SlotTakenController extends AbstractController
 {
     /**
-     * @Route("/course/date/{date}/{room}")
+     * @Route("/course/date/{date}/{room}/{course}", defaults={"course" = null})
      */
-    public function getAvailableSlot(\DateTime $date, Room $room,Request $request, CourseService $service)
+    public function getAvailableSlot(\DateTime $date, Room $room, ?Course $course, Request $request, CourseService $service)
     {
         if (!$request->isXmlHttpRequest()) {
 
             return new HttpException( '403', 'wrong request');
         }
 
-        $available = $service->getAvailableSlot($date, $room);
+        $available = $service->getAvailableSlot($date, $room, $course);
 
         sleep(0.5);
 
